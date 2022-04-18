@@ -68,9 +68,6 @@ mark {
 #subwrap {
   display: flex;
   gap: 6px;
-}
-
-#subbox {
   transition: opacity 150ms;
 }
 
