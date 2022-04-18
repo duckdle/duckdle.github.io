@@ -198,28 +198,6 @@ body[data-help="true"] #image > img {
   transition: border 80ms;
 }
 
-.button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 24px;
-  padding: 8px;
-  margin: 8px;
-  border-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, .1);
-  backdrop-filter: blur(2px);
-  border: 1px solid rgba(255, 255, 255, .2);
-  transition: 100ms;
-}
-
-.button:hover {
-  background: rgba(255, 255, 255, .1);
-}
-
-.button:active {
-  transform: scale(.9);
-}
-
 .row {
   display: flex;
   height: 100%;
