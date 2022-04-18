@@ -141,6 +141,8 @@ document.addEventListener('keydown', async (e) => {
     }
   } else {
     if (letters.includes(key)) {
+      ls.help = false;
+      ds.help = ls.help;
       gameboard[row].forEach((letter, index) => {
         if (letter.length == 0 && !done) {
           gameboard[row][index] = key;
