@@ -13,6 +13,8 @@ var subtitleText;
 var state;
 var row;
 
+var quackInt;
+
 if (ls.word == word) {
   gameboard = JSON.parse(ls.gameboard || '[["","","","",""],["","","","",""],["","","","",""],["","","","",""],["","","","",""]]');
   subtitleText = ls.subtitleText || '';
@@ -58,7 +60,7 @@ if (!ls.visited) {
 $('#vkb').oninput = () => $('#vkb').value = '';
 
 $('#title').textContent = `Duckdle #${daysago}`;
-$(':root').style.setProperty('--blur', state ? 0 : 3 - row);
+$(':root').style.setProperty('--blur', 3 - row);
 $(`#guess > .row:nth-child(${row + 1})`)?.classList.add('focused');
 $('#image > img').src = secret[word];
 ds.help = ls.help;
@@ -84,6 +86,7 @@ $('#image > img').oncontextmenu = () => {
 };
 
 $('#guess').onclick = () => {
+  if (state) return;
   let rect = $(`#guess > .row:nth-child(${row + 1})`).getBoundingClientRect();
   $('#vkb').style.top = `${rect.top + window.scrollY}px`;
   $('#vkb').style.left = `${rect.left + window.scrollX}px`;
@@ -92,7 +95,25 @@ $('#guess').onclick = () => {
   $('#vkb').focus();
 };
 
-$('#subwrap').oncontextmenu = () => {
+$('#subbox').onclick = async () => {
+  clearTimeout(quackInt);
+  if ($('#subtitle').textContent != ' *quack*') {
+    $('#subwrap').classList.add('hide');
+    await sleep(150);
+    $('#subtitle').textContent = ' *quack*';
+    await sleep(150);
+    $('#subwrap').classList.remove('hide');
+  }
+  quackInt = setTimeout(async () => {
+    $('#subwrap').classList.add('hide');
+    await sleep(150);
+    $('#subtitle').textContent = ` ${subtitleText}`;
+    await sleep(150);
+    $('#subwrap').classList.remove('hide');
+  }, 2000);
+};
+
+$('#subbox').oncontextmenu = () => {
   if (confirm('Looks like you\'ve found an easter egg\nWould you like to see it?')) {
     window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
   } else {
@@ -141,8 +162,6 @@ document.addEventListener('keydown', async (e) => {
     }
   } else {
     if (letters.includes(key)) {
-      ls.help = false;
-      ds.help = ls.help;
       gameboard[row].forEach((letter, index) => {
         if (letter.length == 0 && !done) {
           gameboard[row][index] = key;
@@ -151,6 +170,11 @@ document.addEventListener('keydown', async (e) => {
           done = true;
         }
       });
+      if (JSON.parse(ls.help)) {
+        ls.help = false;
+        ds.help = ls.help;
+        subtitle('Tap image for directions');
+      }
     } else if (key == 'BACKSPACE') {
       gameboard[row].slice().reverse().forEach((letter, rindex) => {
         if (letter.length !== 0 && !done) {
@@ -190,7 +214,7 @@ document.addEventListener('keydown', async (e) => {
           ls.state = 'lost';
           ds.state = 'lost';
           $('#vkb').style.display = 'none';
-          subtitle(word.toUpperCase());
+          subtitle(`The word was ${word.toUpperCase()}`);
           await sleep(300);
           ls.share = true;
           ds.share = true;
@@ -226,11 +250,11 @@ async function subtitle(text = '') {
   subtitleText = text;
   ls.subtitleText = text;
   ds.subtitle = text;
-  $('#subbox').classList.add('hide');
+  $('#subwrap').classList.add('hide');
   await sleep(150);
   $('#subtitle').textContent = text ? ` ${text}` : '';
   await sleep(150);
-  $('#subbox').classList.remove('hide');
+  $('#subwrap').classList.remove('hide');
 }
 
 async function sleep(time) {
