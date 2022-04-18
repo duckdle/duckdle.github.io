@@ -60,7 +60,7 @@ if (!ls.visited) {
 $('#vkb').oninput = () => $('#vkb').value = '';
 
 $('#title').textContent = `Duckdle #${daysago}`;
-$(':root').style.setProperty('--blur', 3 - row);
+$(':root').style.setProperty('--blur', state ? 0 : 3 - row);
 $(`#guess > .row:nth-child(${row + 1})`)?.classList.add('focused');
 $('#image > img').src = secret[word];
 ds.help = ls.help;
