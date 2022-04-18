@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="theme-color" content="#111111">
+  <meta property="og:title" content="Duckdle!">
+  <meta property="og:description" content="This is an example">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link href="splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="1f986.svg">
+  <title>Duckdle!</title>
+</head>
+<body data-app-focused="false" data-subtitle data-state data-help data-share>
+  <div id="wrap">
+    <div id="title" class="glass">Duckdle #?</div>
+    <div id="gamewrap">
+      <div id="perspective">
+        <div id="imagewrap">
+          <div id="image" class="glass">
+            <img draggable="false">
+          </div>
+          <div id="help" class="glass">
+            <div id="helpclose" class="button">↩️</div>
+            <div id="helptext">
+              <p>Guess the <strong>DUCKDLE</strong> in <strong>5</strong> tries</p>
+              <p>An image of a word retrieved from DuckDuckGo will be presented daily</p>
+              <p>Each guess must be a valid word</p>
+              <p>After each guess, the image will become clearer</p>
+              <p>No feedback is given, guesses are either completely <mark>right, or wrong</mark></p>
+              <a id="pipipear" href="https://github.com/pipipear/duckdle-issue-tracker" tabindex="-1">Made by pipipear</a>
+            </div>
+          </div>
+      </div>
+      </div>
+      <div id="guess" class="glass">
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+      </div>
+    </div>
+    <div id="subwrap">
+      <div id="subbox" class="glass"><span><span id="duck">🦆</span><span id="subtitle"></span></div>
+      <div id="share" class="glass"><span>✂️ Share</span></div>
+    </div>
+  </div>
+  <input id="vkb" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="-1"></input>
+  <script src="secret.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
