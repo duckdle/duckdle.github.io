@@ -197,14 +197,12 @@ body[data-help="true"] #image > img {
 
 .row {
   display: flex;
-  /* height: 100%; */
-  flex-grow: 1;
+  height: 100%;
   gap: 8px;
 }
 
 .row > div {
-  /* width: 100%; */
-  flex-grow: 1;
+  width: 100%;
   background-color: rgba(0, 0, 0, .2);
   border-radius: 10px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, .1);
