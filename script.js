@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', () => {
+  FastClick.attach(document.body);
+}, false)
+
+
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 const ds = document.body.dataset;
@@ -27,9 +32,9 @@ if (ls.word == word) {
   let trow = 0;
   gameboard.forEach(r => {
     if (r.join('') == word.toUpperCase()) {
-      $(`#guess > .row:nth-child(${trow + 1})`)?.classList.add('correct');
+      $cl(`#guess > .row:nth-child(${trow + 1})`, 'add', 'correct');
     } else if (trow < row) {
-      $(`#guess > .row:nth-child(${trow + 1})`)?.classList.add('incorrect');
+      $cl(`#guess > .row:nth-child(${trow + 1})`, 'add', 'incorrect');
     }
     let index = 0;
     r.forEach(c => {
@@ -61,7 +66,7 @@ $('#vkb').oninput = () => $('#vkb').value = '';
 
 $('#title').textContent = `Duckdle #${daysago}`;
 $(':root').style.setProperty('--blur', state ? 0 : 3 - row);
-$(`#guess > .row:nth-child(${row + 1})`)?.classList.add('focused');
+$cl(`#guess > .row:nth-child(${row + 1})`, 'add', 'focused');
 $('#image > img').src = secret[word];
 ds.help = ls.help;
 
@@ -69,11 +74,12 @@ ds.help = ls.help;
 document.body.onclick = () => {};
 
 $('#image').onclick = () => {
-  ls.help = !JSON.parse(ls.help);
+  ls.help = true;
   ds.help = ls.help;
 };
 
-$('#help').onclick = () => {
+$('#help').onclick = (e) => {
+  if (e.target == $('#pipipear')) return;
   ls.help = false;
   ds.help = ls.help;
 };
@@ -87,15 +93,18 @@ $('#image > img').oncontextmenu = () => {
 
 $('#guess').onclick = () => {
   if (state) return;
-  let rect = $(`#guess > .row:nth-child(${row + 1})`).getBoundingClientRect();
-  $('#vkb').style.top = `${rect.top + window.scrollY}px`;
-  $('#vkb').style.left = `${rect.left + window.scrollX}px`;
-  $('#vkb').style.width = `${rect.width}px`;
-  $('#vkb').style.height = `${rect.height}px`;
+  if (JSON.parse(ls.help)) return;
+  let tl = $(`#guess > .row:nth-child(${row + 1}) > div:first-child`).getBoundingClientRect();
+  let br = $(`#guess > .row:nth-child(${row + 1}) > div:last-child`).getBoundingClientRect();
+  $('#vkb').style.top = `${tl.top + window.scrollY}px`;
+  $('#vkb').style.left = `${tl.left + window.scrollX}px`;
+  $('#vkb').style.width = `${br.right - tl.left}px`;
+  $('#vkb').style.height = `${tl.height}px`;
   $('#vkb').focus();
 };
 
 $('#subbox').onclick = async () => {
+  if (JSON.parse(ls.help)) return;
   clearTimeout(quackInt);
   if ($('#subtitle').textContent != ' *quack*') {
     $('#subwrap').classList.add('hide');
@@ -114,6 +123,7 @@ $('#subbox').onclick = async () => {
 };
 
 $('#subbox').oncontextmenu = () => {
+  if (JSON.parse(ls.help)) return;
   if (confirm('Looks like you\'ve found an easter egg\nWould you like to see it?')) {
     window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
   } else {
@@ -123,6 +133,7 @@ $('#subbox').oncontextmenu = () => {
 };
 
 $('#share').onclick = async () => {
+  if (JSON.parse(ls.help)) return;
   let emojis = `Duckdle #${daysago}\n\n`;
   gameboard.forEach(r => {
     if (r.join('') == word.toUpperCase()) return emojis += '✅';
@@ -149,88 +160,98 @@ document.addEventListener('gesturestart', function (e) {
 });
 
 document.addEventListener('keydown', async (e) => {
-  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.ctrlKey || e.metaKey || e.key == "Meta" || e.altKey) return;
   var key = e.key.toUpperCase();
   var done = false;
   if (key == 'ESCAPE') {
     ls.help = !JSON.parse(ls.help);
     ds.help = ls.help;
-  }
-  if (state) {
+  } else if (state) {
     if (key == 'ENTER') {
       $('#share').click();
     }
   } else {
-    if (letters.includes(key)) {
-      gameboard[row].forEach((letter, index) => {
-        if (letter.length == 0 && !done) {
-          gameboard[row][index] = key;
-          ls.gameboard = JSON.stringify(gameboard);
-          setItem(row + 1, index + 1, key);
-          done = true;
-        }
-      });
-      if (JSON.parse(ls.help)) {
-        ls.help = false;
-        ds.help = ls.help;
-        subtitle('Tap image for directions');
-      }
-    } else if (key == 'BACKSPACE') {
-      gameboard[row].slice().reverse().forEach((letter, rindex) => {
-        if (letter.length !== 0 && !done) {
-          var index = 4 - rindex;
-          gameboard[row][index] = '';
-          ls.gameboard = JSON.stringify(gameboard);
-          setItem(row + 1, index + 1, '');
-          done = true;
-        }
-      });
-    } else if (key == 'ENTER') {
-      var guess = gameboard[row].join('').toLowerCase();
-      if (guess == word) {
-        $('#vkb').blur();
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        state = 'won';
-        ls.state = 'won';
-        ds.state = 'won';
-        $('#vkb').style.display = 'none';
-        $(':root').style.setProperty('--blur', 0);
-        subtitle('Nice!');
-        $(`#guess > .row:nth-child(${row + 1})`)?.classList.add('correct');
-        await sleep(300);
-        ls.share = true;
-        ds.share = true;
-      } else if (secret[guess] || others.includes(guess)) {
-        $('#vkb').blur();
-        $('#image').scrollIntoView({ behavior: 'smooth' });
-        subtitle();
-        $(`#guess > .row:nth-child(${row + 1})`)?.classList.remove('focused');
-        $(`#guess > .row:nth-child(${row + 1})`)?.classList.add('incorrect');
-        row++;
-        ls.row = row;
-        $(':root').style.setProperty('--blur', 3 - row);
-        if (row == 5) {
-          state = 'lost';
-          ls.state = 'lost';
-          ds.state = 'lost';
+    if (JSON.parse(ls.help)) {
+      if (e.shiftKey) return;
+      $cl('#help', 'add', 'invalid');
+      await sleep(600);
+      $cl('#help', 'remove', 'invalid');
+    } else {
+      if (letters.includes(key)) {
+        gameboard[row].forEach((letter, index) => {
+          if (letter.length == 0 && !done) {
+            gameboard[row][index] = key;
+            ls.gameboard = JSON.stringify(gameboard);
+            setItem(row + 1, index + 1, key);
+            done = true;
+          }
+        });
+      } else if (key == 'BACKSPACE') {
+        gameboard[row].slice().reverse().forEach((letter, rindex) => {
+          if (letter.length !== 0 && !done) {
+            var index = 4 - rindex;
+            gameboard[row][index] = '';
+            ls.gameboard = JSON.stringify(gameboard);
+            setItem(row + 1, index + 1, '');
+            done = true;
+          }
+        });
+      } else if (key == 'ENTER') {
+        var guess = gameboard[row].join('').toLowerCase();
+        if (guess == word) {
+          $('#vkb').blur();
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+          state = 'won';
+          ls.state = 'won';
+          ds.state = 'won';
           $('#vkb').style.display = 'none';
-          subtitle(`The word was ${word.toUpperCase()}`);
+          $(':root').style.setProperty('--blur', 0);
+          subtitle('Nice!');
+          $cl(`#guess > .row:nth-child(${row + 1})`, 'add', 'correct');
           await sleep(300);
           ls.share = true;
           ds.share = true;
+        } else if (secret[guess] || others.includes(guess)) {
+          $('#vkb').blur();
+          $('#image').scrollIntoView({ behavior: 'smooth' });
+          subtitle();
+          $cl(`#guess > .row:nth-child(${row + 1})`, 'remove', 'focused');
+          $cl(`#guess > .row:nth-child(${row + 1})`, 'add', 'incorrect');
+          row++;
+          ls.row = row;
+          $(':root').style.setProperty('--blur', 3 - row);
+          if (row == 5) {
+            state = 'lost';
+            ls.state = 'lost';
+            ds.state = 'lost';
+            $('#vkb').style.display = 'none';
+            subtitle(`The word was ${word.toUpperCase()}`);
+            await sleep(150);
+            ls.share = true;
+            ds.share = true;
+          } else {
+            $cl(`#guess > .row:nth-child(${row + 1})`, 'add', 'focused');
+          }
         } else {
-          $(`#guess > .row:nth-child(${row + 1})`)?.classList.add('focused');
+          if (guess.length < 5) subtitle('Not enough letters');
+          if (guess.length == 5) subtitle('Not in word list');
+          $cl(`#guess > .row:nth-child(${row + 1})`, 'add', 'invalid');
+          await sleep(600);
+          $cl(`#guess > .row:nth-child(${row + 1})`, 'remove', 'invalid');
         }
-      } else {
-        if (guess.length < 5) subtitle('Not enough letters');
-        if (guess.length == 5) subtitle('Not in word list');
-        $(`#guess > .row:nth-child(${row + 1})`)?.classList.add('invalid');
-        await sleep(600);
-        $(`#guess > .row:nth-child(${row + 1})`)?.classList.remove('invalid');
       }
     }
   }
 });
+
+function $cl(selector, addremove = 'add', targetclass) {
+  let element = $(selector);
+  if (!element) return;
+  switch (addremove) {
+    case 'add':    element.classList.   add(targetclass); break;
+    case 'remove': element.classList.remove(targetclass); break;
+  }
+}
 
 async function setItem(row, column, content) {
   let item = $(`#guess > .row:nth-child(${row}) > div:nth-child(${column})`);
