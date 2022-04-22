@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, user-scalable=no">
-  <meta name="theme-color" content="#111111">
   <meta property="og:title" content="Duckdle!">
   <meta property="og:description" content="Guess words from images">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,8 +27,15 @@
 </head>
 <body data-app-focused="false" data-subtitle data-state data-help data-share>
   <div id="wrap">
-    <div id="title" class="glass">Duckdle #?</div>
+    <div id="title" class="glass">Loading...</div>
     <div id="gamewrap">
+      <div id="guess" class="glass">
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+      </div>
       <div id="perspective">
         <div id="imagewrap">
           <div id="image" class="glass">
@@ -41,27 +47,23 @@
               <p>An image of a word, retrieved from DuckDuckGo, will be presented daily</p>
               <p>Each guess must be a valid word, after which the image will be clearer</p>
               <p>The return, or enter key on your device's keyboard submits a guess</p>
-              <p>No feedback is given, guesses are either completely <mark>right, or wrong</mark></p>
+              <p>No feedback is given, guesses are either <mark>completely</mark> right, or wrong</mark></p>
               <p>Tap this card or press ESC to dismiss</p>
               <a id="pipipear" href="https://github.com/pipipear/duckdle-issue-tracker" tabindex="-1">Made by pipipear</a>
             </div>
           </div>
       </div>
       </div>
-      <div id="guess" class="glass">
-        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
-        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
-        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
-        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
-        <div class="row"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
-      </div>
     </div>
-    <div id="subwrap">
-      <div id="subbox" class="glass"><span><span id="duck">🦆</span><span id="subtitle"></span></div>
-      <div id="share" class="glass"><span>✂️ Share</span></div>
+    <div id="supersubwrap">
+      <div id="subwrap">
+        <div id="subbox" class="glass"><span><span id="duck">🦆</span><span id="subtitle"></span></div>
+        <div id="share" class="glass"><span>✂️ Share</span></div>
+      </div>
     </div>
   </div>
   <input id="vkb" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="-1"></input>
+  <script src='fastclick.js'></script>
   <script src="secret.js"></script>
   <script src="script.js"></script>
   <script defer src="//static.getclicky.com/101363062.js"></script>
