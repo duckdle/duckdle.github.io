@@ -52,9 +52,15 @@ if (ls.word == word) {
     ['', '', '', '', ''],
     ['', '', '', '', ''],
   ];
+  ls.gameboard = JSON.stringify(gameboard);
   subtitleText = '';
+  ls.subtitleText = subtitleText;
+  ds.subtitleText = subtitleText
   state = '';
+  ls.state = state;
+  ds.state = state;
   row = 0;
+  ls.row = row
 }
 
 if (!ls.visited) {
